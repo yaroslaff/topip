@@ -9,33 +9,18 @@ go build
 cp topip /usr/local/bin 
 ~~~
 
-##  grep IPs
+## Top mode (default)
+Default top mode counts occurences of each IP address and print top N (10) results.
 
 ~~~
-topip < /var/log/mail.log
-142.98.11.27
-159.60.83.126
-211.79.60.219
+topip /var/log/mail.log
 ~~~
 
-or `topip -i /var/log/mail.log`.
-
-If you want to see full lines use -f (only lines with IP addresses are printed):
+or via stdin, something like:
 ~~~
-topip -f < /var/log/mail.log
-Oct  2 00:16:06 mx postfix/smtpd[32199]: lost connection after AUTH from unknown[208.79.20.219]
-Oct  2 00:16:06 mx postfix/smtpd[32199]: disconnect from unknown[208.79.20.219] ehlo=1 auth=0/1 commands=1/2
+grep "SASL LOGIN authentication failed:" /var/log/mail.log | topip
 ~~~
 
-## Top
+##  Grep mode
 
-Use `-t NUM` to top TOP NUM IPv4 addresses:
-~~~
-$ ./topip -t 5 < /var/log/mail.log 
-      12 52.28.217.103
-      27 35.52.135.98
-      68 127.0.0.1
-     100 18.132.33.18
-     116 13.110.205.132
-~~~
-
+Grep mode activated with `-g` or `-i` keys. `-g` print whole lines which has any IP address, `-i` print only IP addresses.

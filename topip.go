@@ -43,14 +43,25 @@ func main() {
 	r, _ := regexp.Compile(regex)
 	ipcount := make(map[string]int)
 
-	infile := flag.String("i", "", "input file (stdin)")
-	full := flag.Bool("f", false, "print full string")
-	top := flag.Int("t", 0, "print top N IPs")
+	grepmode := flag.Bool("g", false, "grep mode (full strings)")
+	ipmode := flag.Bool("i", false, "IPv4 mode (only IP addresses)")
+	top := flag.Int("t", 10, "print top N IPs")
 
+	flag.Usage = func() {
+		fmt.Fprintf(flag.CommandLine.Output(),
+			"Usage: %s [filename]\n"+
+				"  if no filename, then stdin", os.Args[0])
+		flag.PrintDefaults()
+	}
+
+	/* Parse arguments */
 	flag.Parse()
+	topmode := !(*grepmode || *ipmode)
 
-	if *infile != "" {
-		file, err := os.Open(*infile)
+	infile := flag.Arg(0)
+
+	if infile != "" {
+		file, err := os.Open(infile)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -65,7 +76,8 @@ func main() {
 			line := scanner.Text()
 			ipaddr := r.FindString(scanner.Text())
 
-			if *top > 0 {
+			if topmode {
+				// top mode
 				if _, ok := ipcount[ipaddr]; ok {
 					ipcount[ipaddr]++
 				} else {
@@ -73,11 +85,11 @@ func main() {
 
 				}
 			} else {
-
-				if *full {
-					fmt.Println(line)
-				} else {
+				// grep mode
+				if *ipmode {
 					fmt.Println(ipaddr)
+				} else {
+					fmt.Println(line)
 				}
 			}
 		}
