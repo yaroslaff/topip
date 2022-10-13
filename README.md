@@ -1,7 +1,15 @@
 # topip
 IPv4 grep and top usage summary for log files.
 
-## Build / install
+
+## Install precompiled version
+~~~
+wget https://github.com/yaroslaff/topip/releases/download/0.0.1/topip
+chmox +x topip
+mv topip /usr/local/bin
+~~~
+
+## Build from sources
 ~~~
 git clone https://github.com/yaroslaff/topip
 cd topip
