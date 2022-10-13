@@ -5,7 +5,7 @@ IPv4 grep and top usage summary for log files.
 ~~~
 git clone https://github.com/yaroslaff/topip
 cd topip
-go build
+go build .
 cp topip /usr/local/bin 
 ~~~
 
@@ -13,7 +13,11 @@ cp topip /usr/local/bin
 Default top mode counts occurences of each IP address and print top N (10) results.
 
 ~~~
-topip /var/log/mail.log
+$ topip /var/log/mail.log
+...
+    8405 92.155.149.266
+    8496 35.142.45.298
+   66340 127.0.0.1
 ~~~
 
 or via stdin, something like:
@@ -21,6 +25,25 @@ or via stdin, something like:
 grep "SASL LOGIN authentication failed:" /var/log/mail.log | topip
 ~~~
 
+use `-t N` to override default number of lines (10).
+
 ##  Grep mode
 
 Grep mode activated with `-g` or `-i` keys. `-g` print whole lines which has any IP address, `-i` print only IP addresses.
+
+Just grep all lines when we have IP:
+~~~
+# topip -g /var/log/mail.log
+Oct  9 05:48:25 mx postfix/smtpd[2166]: connect from unknown[191.211.100.228]
+Oct  9 05:48:26 mx postfix/smtpd[2162]: connect from unknown[103.129.202.216]
+Oct  9 05:48:30 mx postfix/smtpd[2166]: warning: unknown[191.211.100.228]: SASL LOGIN authentication failed: UGFzc3dvcmQ6
+....
+~~~
+
+or print only IPs:
+~~~
+# topip -i /var/log/mail.log
+191.211.100.228
+103.129.202.216
+191.211.100.228
+~~~
