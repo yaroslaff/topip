@@ -4,7 +4,7 @@ IPv4 grep and top usage summary for log files.
 
 ## Install precompiled version
 ~~~
-wget https://github.com/yaroslaff/topip/releases/download/0.0.1/topip
+wget -O topip https://github.com/yaroslaff/topip/releases/download/0.0.1/topip-`arch` 
 chmox +x topip
 mv topip /usr/local/bin
 ~~~
