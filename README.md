@@ -1,15 +1,21 @@
 # topip
 IPv4 grep and top usage summary for log files.
 
-
-## Install precompiled version
+## Install option 1: precompiled version
 ~~~
 wget -O topip https://github.com/yaroslaff/topip/releases/download/0.0.1/topip-`arch` 
 chmod +x topip
 mv topip /usr/local/bin
 ~~~
 
-## Build from sources
+## Install option 2: 
+If you have golang installed, use this command
+~~~
+go get github.com/yaroslaff/topip@latest
+~~~
+It will install topip inside $GOPATH
+
+## Install option 3: Build from sources
 ~~~
 git clone https://github.com/yaroslaff/topip
 cd topip
