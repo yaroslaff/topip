@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"regexp"
 	"sort"
+
+	"github.com/dlclark/regexp2"
 )
 
 func printTop(m map[string]int, top int) {
@@ -39,8 +40,15 @@ func printTop(m map[string]int, top int) {
 func main() {
 
 	var scanner *bufio.Scanner
-	regex := "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"
-	r, _ := regexp.Compile(regex)
+	// regex := "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"
+	//regex := `\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?!\.)`
+	regex := `\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b(?!\.)`
+
+	r, err := regexp2.Compile(regex, 0)
+	if err != nil {
+		log.Fatal("Regex compilation failed: ", err)
+	}
+
 	ipcount := make(map[string]int)
 
 	grepmode := flag.Bool("g", false, "grep mode (full strings)")
@@ -72,18 +80,13 @@ func main() {
 	}
 
 	for scanner.Scan() {
-		if r.MatchString(scanner.Text()) {
+		if matched, _ := r.MatchString(scanner.Text()); matched {
 			line := scanner.Text()
-			ipaddr := r.FindString(scanner.Text())
-
+			ipaddr_match, _ := r.FindStringMatch(scanner.Text())
+			ipaddr := ipaddr_match.String()
 			if topmode {
 				// top mode
-				if _, ok := ipcount[ipaddr]; ok {
-					ipcount[ipaddr]++
-				} else {
-					ipcount[ipaddr] = 1
-
-				}
+				ipcount[ipaddr]++
 			} else {
 				// grep mode
 				if *ipmode {
