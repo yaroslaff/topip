@@ -13,7 +13,7 @@ If you have golang installed, use this command
 ~~~
 go install github.com/yaroslaff/topip@latest
 ~~~
-It will install topip inside $GOPATH
+It will install topip inside $GOPATH (often it will be `~/go/bin/topip`)
 
 ## Install option 3: Build from sources
 ~~~
