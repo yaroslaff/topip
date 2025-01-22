@@ -11,7 +11,7 @@ mv topip /usr/local/bin
 ## Install option 2: 
 If you have golang installed, use this command
 ~~~
-go get github.com/yaroslaff/topip@latest
+go install github.com/yaroslaff/topip@latest
 ~~~
 It will install topip inside $GOPATH
 
